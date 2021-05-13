@@ -1,3 +1,3 @@
 # Chabit - A habits/tasks tracker CLI
 
-Add more later
+This application is still in development!!!
