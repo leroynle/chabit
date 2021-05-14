@@ -18,7 +18,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/LeroyS1/Chabit/assets/logo.png">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="https://github.com/LeroyS1/Chabit/assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">Chabit</h3>
