@@ -24,15 +24,9 @@ import (
 	"strconv"
 
 	"github.com/manifoldco/promptui"
+
 	"github.com/spf13/cobra"
 )
-
-type Tasks struct {
-	TaskID   int64
-	Title    string
-	Goal     int64
-	Complete int64
-}
 
 // addCmd represents the add command
 var addCmd = &cobra.Command{
@@ -70,6 +64,14 @@ func init() {
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
+type Tasks struct {
+	TaskID   int64
+	Title    string
+	Duration string
+	Goal     int64
+	Complete int64
+}
+
 func addATask() {
 	prompt := promptui.Select{
 		Label: "Select one option",
@@ -94,41 +96,8 @@ func addATask() {
 
 func addTaskManual() {
 	taskTitle := getTaskTitleFromUser()
-	//Selection Duration
-	prompt1 := promptui.Select{
-		Label: "Duration: Determines the period of time for a single completion",
-		Items: []string{"Daily", "Weekly", "Monthly"},
-	}
-
-	_, taskDuration, err1 := prompt1.Run()
-
-	if err1 != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
-
-	fmt.Printf("You choose %q\n", taskDuration)
-
-	validate1 := func(input string) error {
-		num, err := strconv.ParseInt(input, 10, 64)
-		if err != nil || num < 0 {
-			return errors.New("invalid number")
-		}
-		return nil
-	}
-
-	prompt2 := promptui.Prompt{
-		Label:    "Number of time per day",
-		Validate: validate1,
-	}
-
-	taskTimes, err := prompt2.Run()
-
-	if err != nil {
-		fmt.Printf("Prompt failed %v\n", err)
-		return
-	}
-	taskTimesD, _ := strconv.ParseInt(taskTimes, 10, 64)
+	taskDuration := getTaskDurationFromUser()
+	taskGoal := getGoalFromUser(taskDuration)
 
 	//read json from file
 	byteValue, err := ioutil.ReadFile("data/tasks.json")
@@ -149,7 +118,8 @@ func addTaskManual() {
 	newTask := map[string]interface{}{
 		"Title":    taskTitle,
 		"TaskID":   maxTaskID,
-		"Goal":     taskTimesD,
+		"Duration": taskDuration,
+		"Goal":     taskGoal,
 		"Complete": 0,
 	}
 	nodes = append(nodes, newTask)
@@ -180,13 +150,53 @@ func getTaskTitleFromUser() string {
 		Validate: validate,
 	}
 
-	taskTitle, err := prompt.Run()
+	result, err := prompt.Run()
 
 	if err != nil {
 		fmt.Printf("Prompt failed %v\n", err)
 		log.Fatal(err)
 	}
-	return taskTitle
+	return result
+}
+
+func getTaskDurationFromUser() string {
+	prompt1 := promptui.Select{
+		Label: "Duration: Determines the period of time for a single completion",
+		Items: []string{"Daily", "Weekly", "Monthly"},
+	}
+
+	_, result, err := prompt1.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		log.Fatal(err)
+	}
+
+	return result
+}
+
+func getGoalFromUser(duration string) int64 {
+	validate := func(input string) error {
+		num, err := strconv.ParseInt(input, 10, 64)
+		if err != nil || num < 0 {
+			return errors.New("invalid number")
+		}
+		return nil
+	}
+
+	prompt1 := promptui.Prompt{
+		Label:    "Set your Goal",
+		Validate: validate,
+	}
+
+	result, err := prompt1.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		log.Fatal(err)
+	}
+	resultInt, _ := strconv.ParseInt(result, 10, 64)
+	return resultInt
 }
 
 func getMaxTaskID(nodes []interface{}) int64 {

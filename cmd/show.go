@@ -58,6 +58,7 @@ func init() {
 }
 
 func showTasks() {
+
 	byteValue, err := ioutil.ReadFile("data/tasks.json")
 	if err != nil {
 		log.Fatal(err)
@@ -78,15 +79,16 @@ func showTasks() {
 	for i := range tasks {
 		var completionPrint string
 		goalPrint := strconv.FormatInt(tasks[i].Complete, 10) + "/" + strconv.FormatInt(tasks[i].Goal, 10)
+
 		if tasks[i].Complete != tasks[i].Goal {
 			completionPrint = emoji.Sprint(":cross_mark:")
 		} else {
 			completionPrint = emoji.Sprint(":check_mark_button:")
 		}
-		data = append(data, []string{strconv.FormatInt(tasks[i].TaskID, 10), tasks[i].Title, goalPrint, completionPrint})
+		data = append(data, []string{strconv.FormatInt(tasks[i].TaskID, 10), tasks[i].Title, tasks[i].Duration, goalPrint, completionPrint})
 	}
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"#", "TASK", "GOAL", "COMPLETE"})
+	table.SetHeader([]string{"#", "TASK", "DURATION", "GOAL", "COMPLETE"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	table.AppendBulk(data) // Add Bulk Data

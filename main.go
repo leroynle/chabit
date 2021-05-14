@@ -15,7 +15,9 @@ limitations under the License.
 */
 package main
 
-import "chabit/cmd"
+import (
+	"chabit/cmd"
+)
 
 func main() {
 	cmd.Execute()

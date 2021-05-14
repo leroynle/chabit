@@ -1,10 +1,11 @@
 {
  "tasks": [
   {
-   "Complete": 0,
-   "Goal": 3,
+   "Complete": 4,
+   "Duration": "Daily",
+   "Goal": 4,
    "TaskID": 1,
-   "Title": "fdds"
+   "Title": "Drink Water"
   }
  ]
 }

@@ -4,15 +4,15 @@ go 1.16
 
 require (
 	github.com/fsnotify/fsnotify v1.4.9 // indirect
+	github.com/go-co-op/gocron v1.5.0 // indirect
 	github.com/go-delve/delve v1.6.0 // indirect
+	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/kyokomi/emoji/v2 v2.2.8 // indirect
 	github.com/magiconair/properties v1.8.5 // indirect
 	github.com/manifoldco/promptui v0.8.0 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/olekukonko/tablewriter v0.0.5 // indirect
-	github.com/onsi/ginkgo v1.8.0 // indirect
-	github.com/onsi/gomega v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.0 // indirect
 	github.com/pkg/profile v0.0.0-20170413231811-06b906832ed0 // indirect
 	github.com/spf13/afero v1.6.0 // indirect
