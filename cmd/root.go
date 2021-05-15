@@ -16,7 +16,11 @@ limitations under the License.
 package cmd
 
 import (
+	"chabit/internal"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"log"
 	"os"
 	"time"
 
@@ -30,7 +34,7 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "chabit",
-	Short: "A brief description of your application",
+	Short: "An awesome habits and tasks tracker for your console",
 	Long: `A longer description that spans multiple lines and likely contains
 examples and usage of using your application. For example:
 
@@ -45,8 +49,8 @@ to quickly create a Cobra application.`,
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
-	weekday := time.Now().Weekday()
-	fmt.Println(weekday)
+	resetDailyTasks()
+	// resetWeeklyTask()
 	cobra.CheckErr(rootCmd.Execute())
 }
 
@@ -86,3 +90,75 @@ func initConfig() {
 		fmt.Fprintln(os.Stderr, "Using config file:", viper.ConfigFileUsed())
 	}
 }
+
+func resetDailyTasks() {
+	tasks := internal.GetDataFromJsonTasks()
+
+	if isNewDay() {
+		for i := range tasks {
+			p := &tasks[i]
+			if p.Duration == "Daily" {
+				p.Complete = 0
+			}
+		}
+		byteValue, err := json.MarshalIndent(tasks, "", " ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		err = ioutil.WriteFile("data/tasks.json", byteValue, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+}
+
+func isNewDay() bool {
+	today := time.Now().Weekday().String()
+
+	getDay := internal.GetDataFromJsonUtilites()
+	yesterday := getDay["Today"]
+	fmt.Println(yesterday)
+	if today != yesterday {
+		getDay["Today"] = today
+		internal.WriteDataToJsonUtilites(getDay)
+		return true
+	} else {
+		return false
+	}
+}
+
+// func resetWeeklyTask() {
+// 	today := time.Now().Weekday().String()
+// 	byteValue, err := ioutil.ReadFile("data/tasks.json")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	var result map[string]interface{}
+// 	err = json.Unmarshal(byteValue, &result)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	nodes := result["tasks"].([]interface{})
+
+// 	for _, node := range nodes {
+// 		m := node.(map[string]interface{})
+// 		if d, found := m["Duration"]; found {
+// 			if d == "Weekly" {
+// 				if w, found1 := m["WeekStart"]; found1 {
+// 					if w == today {
+// 						m["Complete"] = 0
+// 					}
+// 				}
+// 			}
+// 		}
+// 	}
+// 	byteValue, err = json.MarshalIndent(result, "", " ")
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// 	err = ioutil.WriteFile("data/tasks.json", byteValue, 0644)
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+// }

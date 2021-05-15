@@ -16,10 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"encoding/json"
+	"chabit/internal"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"os"
 	"strconv"
 
@@ -59,18 +57,7 @@ func init() {
 
 func showTasks() {
 
-	byteValue, err := ioutil.ReadFile("data/tasks.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var result map[string]interface{}
-	err = json.Unmarshal(byteValue, &result)
-	if err != nil {
-		log.Fatal(err)
-	}
-	nodes := result["tasks"].([]interface{})
-	tasks := convertMapToStruct(nodes)
+	tasks := internal.GetDataFromJsonTasks()
 	data := [][]string{}
 
 	emoji.Println(":ribbon: You got tasks to do today!!! Let's beat them up'")
@@ -88,7 +75,7 @@ func showTasks() {
 		data = append(data, []string{strconv.FormatInt(tasks[i].TaskID, 10), tasks[i].Title, tasks[i].Duration, goalPrint, completionPrint})
 	}
 	table := tablewriter.NewWriter(os.Stdout)
-	table.SetHeader([]string{"#", "TASK", "DURATION", "GOAL", "COMPLETE"})
+	table.SetHeader([]string{"ID", "TASK", "DURATION", "GOAL", "COMPLETE"})
 	table.SetBorders(tablewriter.Border{Left: true, Top: false, Right: true, Bottom: false})
 	table.SetCenterSeparator("|")
 	table.AppendBulk(data) // Add Bulk Data

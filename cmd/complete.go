@@ -16,10 +16,8 @@ limitations under the License.
 package cmd
 
 import (
-	"encoding/json"
+	"chabit/internal"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -28,7 +26,7 @@ import (
 // completeCmd represents the complete command
 var completeCmd = &cobra.Command{
 	Use:   "complete",
-	Short: "A brief description of your command",
+	Short: "Mark your tasks completed",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -36,7 +34,11 @@ Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		completeTasks(args[0])
+		if len(args) < 1 {
+			fmt.Println("The argument is required - For example: chabit complete <TaskID>")
+		} else {
+			completeTasks(args[0])
+		}
 	},
 }
 
@@ -60,43 +62,21 @@ func completeTasks(argsID string) {
 	 */
 	tID, _ := strconv.ParseInt(argsID, 10, 64)
 
-	byteValue, err := ioutil.ReadFile("data/tasks.json")
-	if err != nil {
-		log.Fatal(err)
-	}
+	tasks := internal.GetDataFromJsonTasks()
 
-	var result map[string]interface{}
-	err = json.Unmarshal(byteValue, &result)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	nodes := result["tasks"].([]interface{})
-	for _, node := range nodes {
-		m := node.(map[string]interface{})
-		if id, found := m["TaskID"]; found {
-			intID := int64(id.(float64))
-			if intID == tID {
-				if c, exist := m["Complete"]; exist {
-					intC := int64(c.(float64))
-					if g, exist := m["Goal"]; exist {
-						intG := int64(g.(float64))
-						if intC < intG {
-							m["Complete"] = intC + 1
-						} else {
-							fmt.Println("Task #1 is completed!!! Well done")
-						}
-					}
-				}
+	for i := range tasks {
+		p := &tasks[i]
+		intID := int64(p.TaskID)
+		if intID == tID {
+			intC := int64(p.Complete)
+			intG := int64(p.Goal)
+			if intC < intG {
+				p.Complete = intC + 1
+			} else {
+				fmt.Println("Task #1 is completed!!! Well done")
 			}
 		}
+
 	}
-	byteValue, err = json.MarshalIndent(result, "", " ")
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = ioutil.WriteFile("data/tasks.json", byteValue, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	internal.WriteDataToJsonTasks(tasks)
 }

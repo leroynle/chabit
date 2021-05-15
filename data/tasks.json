@@ -1,11 +1,50 @@
-{
- "tasks": [
-  {
-   "Complete": 4,
-   "Duration": "Daily",
-   "Goal": 4,
-   "TaskID": 1,
-   "Title": "Drink Water"
-  }
- ]
-}
+[
+ {
+  "TaskID": 1,
+  "Title": "Drink Water",
+  "Duration": "Daily",
+  "WeekStart": "",
+  "Goal": 4,
+  "Complete": 1
+ },
+ {
+  "TaskID": 2,
+  "Title": "Study",
+  "Duration": "Daily",
+  "WeekStart": "",
+  "Goal": 4,
+  "Complete": 0
+ },
+ {
+  "TaskID": 3,
+  "Title": "Workout",
+  "Duration": "Weekly",
+  "WeekStart": "Friday",
+  "Goal": 3,
+  "Complete": 1
+ },
+ {
+  "TaskID": 4,
+  "Title": "Soccer",
+  "Duration": "Daily",
+  "WeekStart": "",
+  "Goal": 1,
+  "Complete": 0
+ },
+ {
+  "TaskID": 5,
+  "Title": "Read book",
+  "Duration": "Weekly",
+  "WeekStart": "Friday",
+  "Goal": 3,
+  "Complete": 3
+ },
+ {
+  "TaskID": 6,
+  "Title": "Walk",
+  "Duration": "Weekly",
+  "WeekStart": "Monday",
+  "Goal": 2,
+  "Complete": 2
+ }
+]

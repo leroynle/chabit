@@ -16,10 +16,9 @@ limitations under the License.
 package cmd
 
 import (
-	"encoding/json"
+	"chabit/internal"
 	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"strconv"
 
@@ -31,7 +30,7 @@ import (
 // addCmd represents the add command
 var addCmd = &cobra.Command{
 	Use:   "add",
-	Short: "A brief description of your command",
+	Short: "Add your new habit or task",
 	Long: `A longer description that spans multiple lines and likely contains examples
 and usage of using your command. For example:
 
@@ -64,14 +63,6 @@ func init() {
 	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-type Tasks struct {
-	TaskID   int64
-	Title    string
-	Duration string
-	Goal     int64
-	Complete int64
-}
-
 func addATask() {
 	prompt := promptui.Select{
 		Label: "Select one option",
@@ -95,46 +86,28 @@ func addATask() {
 }
 
 func addTaskManual() {
+	weekStart := "Sunday"
 	taskTitle := getTaskTitleFromUser()
 	taskDuration := getTaskDurationFromUser()
+	if taskDuration == "Weekly" {
+		weekStart = getWeekStarForWeeklyTask()
+	}
 	taskGoal := getGoalFromUser(taskDuration)
 
-	//read json from file
-	byteValue, err := ioutil.ReadFile("data/tasks.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var result map[string]interface{}
-	err = json.Unmarshal(byteValue, &result)
-	if err != nil {
-		log.Fatal(err)
-	}
-	nodes := result["tasks"].([]interface{})
-
+	tasks := internal.GetDataFromJsonTasks()
 	//get max Task ID
-	maxTaskID := getMaxTaskID(nodes) + 1
+	maxTaskID := getMaxTaskID() + 1
 
-	newTask := map[string]interface{}{
-		"Title":    taskTitle,
-		"TaskID":   maxTaskID,
-		"Duration": taskDuration,
-		"Goal":     taskGoal,
-		"Complete": 0,
+	newTask := internal.Tasks{
+		Title:     taskTitle,
+		TaskID:    maxTaskID,
+		Duration:  taskDuration,
+		WeekStart: weekStart,
+		Goal:      taskGoal,
+		Complete:  0,
 	}
-	nodes = append(nodes, newTask)
-	result["tasks"] = nodes
-
-	byteValue, err = json.MarshalIndent(result, "", " ")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//write new data to json file
-	err = ioutil.WriteFile("data/tasks.json", byteValue, 0644)
-	if err != nil {
-		log.Fatal(err)
-	}
+	tasks = append(tasks, newTask)
+	internal.WriteDataToJsonTasks(tasks)
 }
 
 func getTaskTitleFromUser() string {
@@ -162,7 +135,7 @@ func getTaskTitleFromUser() string {
 func getTaskDurationFromUser() string {
 	prompt1 := promptui.Select{
 		Label: "Duration: Determines the period of time for a single completion",
-		Items: []string{"Daily", "Weekly", "Monthly"},
+		Items: []string{"Daily", "Weekly"},
 	}
 
 	_, result, err := prompt1.Run()
@@ -171,7 +144,22 @@ func getTaskDurationFromUser() string {
 		fmt.Printf("Prompt failed %v\n", err)
 		log.Fatal(err)
 	}
+	return result
+}
 
+func getWeekStarForWeeklyTask() string {
+	prompt := promptui.Select{
+		Label: "Start Week On",
+		Items: []string{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+			"Saturday", "Sunday"},
+	}
+
+	_, result, err := prompt.Run()
+
+	if err != nil {
+		fmt.Printf("Prompt failed %v\n", err)
+		log.Fatal(err)
+	}
 	return result
 }
 
@@ -199,13 +187,13 @@ func getGoalFromUser(duration string) int64 {
 	return resultInt
 }
 
-func getMaxTaskID(nodes []interface{}) int64 {
+func getMaxTaskID() int64 {
 	/*
 		Function to get max TaskID from JSON file
 
 		return: the maximum number of taskID from JSON file
 	*/
-	task := convertMapToStruct(nodes)
+	task := internal.GetDataFromJsonTasks()
 	var maxTID int64
 	if len(task) == 0 {
 		maxTID = 0
@@ -222,22 +210,4 @@ func max(a, b int64) int64 {
 		return a
 	}
 	return b
-}
-
-func convertMapToStruct(nodes []interface{}) []Tasks {
-	/*
-		Function to convert array of the interface to
-		array of Tasks struct
-
-		return: array of Tasks struct
-	*/
-	task := []Tasks{}
-	for _, node := range nodes {
-		m := node.(map[string]interface{})
-		jsonString, _ := json.Marshal(m)
-		s := Tasks{}
-		json.Unmarshal([]byte(jsonString), &s)
-		task = append(task, s)
-	}
-	return task
 }
