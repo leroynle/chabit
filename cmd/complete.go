@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © 2021 Leroy N Le contact@leroynle.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -25,26 +25,26 @@ import (
 
 // completeCmd represents the complete command
 var completeCmd = &cobra.Command{
-	Use:   "complete",
+	Use:   "complete <TaskID>",
 	Short: "Mark your tasks completed",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		if len(args) < 1 {
-			fmt.Println("The argument is required - For example: chabit complete <TaskID>")
+		times, _ := cmd.Flags().GetInt64("times")
+		if times > 1 {
+			completeTasksWithTimes(args[0], times)
+		} else if times < 1 {
+			fmt.Println("Number of times must be greater than 0 - For example: chabit complete <TaskID> -t 2")
 		} else {
 			completeTasks(args[0])
 		}
+
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(completeCmd)
-
+	var times int64
+	completeCmd.Flags().Int64VarP(&times, "times", "t", 1, "number of times you completed your task")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
@@ -72,6 +72,31 @@ func completeTasks(argsID string) {
 			intG := int64(p.Goal)
 			if intC < intG {
 				p.Complete = intC + 1
+			} else {
+				fmt.Println("Task #1 is completed!!! Well done")
+			}
+		}
+
+	}
+	internal.WriteDataToJsonTasks(tasks)
+}
+
+func completeTasksWithTimes(argsID string, t int64) {
+	/*
+
+	 */
+	tID, _ := strconv.ParseInt(argsID, 10, 64)
+
+	tasks := internal.GetDataFromJsonTasks()
+
+	for i := range tasks {
+		p := &tasks[i]
+		intID := int64(p.TaskID)
+		if intID == tID {
+			intC := int64(p.Complete)
+			intG := int64(p.Goal)
+			if intC < intG {
+				p.Complete = intC + t
 			} else {
 				fmt.Println("Task #1 is completed!!! Well done")
 			}

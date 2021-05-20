@@ -25,7 +25,7 @@
   <h3 align="center">Chabit</h3>
 
   <p align="center">
-    An awesome habits and tasks tracker for your console
+    An awesome interactive habits and tasks tracker for your console
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
@@ -69,35 +69,37 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## About The App
+An awesome interactive habits and tasks tracker for your terminal that helps you form good habits.
 
-This project is still in development
+Track as many tasks as you want to complate each day or week. Your goal is to build a streak of consecutive days. This app will help you manage your habits or tasks quickly and easily right on the terminal. 
 
+- Add, complete, reschedule, and print tasks or habits from your terminal.
+- Rewind automatically tracks your habit daily or weekly.
+- Many presets that I already set up for you to choose.
+- Future features:
+  - Sync online 24/7.
+  - You can write notes for your habits or tasks.
+
+> This project is still in development
+> 
 ### Built With
-
 * [Go](https://getbootstrap.com)
 * [Cobra](https://jquery.com)
-
-
+* [github.com/manifoldco/promptui](github.com/manifoldco/promptui)
+* [github.com/olekukonko/tablewriter](github.com/olekukonko/tablewriter)
 
 <!-- GETTING STARTED -->
 ## Getting Started
-
-Add Later
-
 ### Prerequisites
-
 * Go  
   Download and install Go with [this link](https://golang.org/doc/install)
 
 ### Installation
-
 Add Later
-
 
 <!-- USAGE EXAMPLES -->
 ## Usage
-
 Add later
 
 <!-- CONTRIBUTING -->
@@ -110,7 +112,6 @@ Contributions are what make the open source community such an amazing place to b
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
 
 
 <!-- LICENSE -->

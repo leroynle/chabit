@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © Leroy N Le contact@leroynle.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,36 +26,30 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// showCmd represents the show command
-var showCmd = &cobra.Command{
-	Use:   "show",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+// printCmd represents the print command
+var printCmd = &cobra.Command{
+	Use:   "print",
+	Short: "Print your tasks list right on the console",
 	Run: func(cmd *cobra.Command, args []string) {
-		showTasks()
+		printTasks()
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(showCmd)
+	rootCmd.AddCommand(printCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// showCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// printCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// showCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// printCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
-func showTasks() {
+func printTasks() {
 
 	tasks := internal.GetDataFromJsonTasks()
 	data := [][]string{}

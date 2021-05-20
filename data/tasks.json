@@ -5,7 +5,7 @@
   "Duration": "Daily",
   "WeekStart": "",
   "Goal": 4,
-  "Complete": 1
+  "Complete": 4
  },
  {
   "TaskID": 2,
@@ -13,7 +13,7 @@
   "Duration": "Daily",
   "WeekStart": "",
   "Goal": 4,
-  "Complete": 0
+  "Complete": 4
  },
  {
   "TaskID": 3,

@@ -1,5 +1,5 @@
 /*
-Copyright © 2021 NAME HERE <EMAIL ADDRESS>
+Copyright © 2021 Leroy N Le contact@leroynle.com
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -34,16 +34,18 @@ var cfgFile string
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
 	Use:   "chabit",
-	Short: "An awesome habits and tasks tracker for your console",
-	Long: `A longer description that spans multiple lines and likely contains
-examples and usage of using your application. For example:
+	Short: "An awesome interactive habits and tasks tracker for your terminal",
+	Long: `An awesome interactive habits and tasks tracker for your terminal.
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	// Uncomment the following line if your bare application
-	// has an action associated with it:
-	// Run: func(cmd *cobra.Command, args []string) { },
+You can manage your habits or tasks quickly and easily right on your console. Now,
+you can earn a perfect day by getting all of your trackers done.
+
+- Add, complete, reschedule, and print tasks or habits from your terminal.
+- Rewind automatically tracks your habit daily or weekly. 
+- Choose presets that already set up.
+- Future features:
+	- Sync online 24/7.
+	- You can write notes for your habits or tasks`,
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -118,7 +120,6 @@ func isNewDay() bool {
 
 	getDay := internal.GetDataFromJsonUtilites()
 	yesterday := getDay["Today"]
-	fmt.Println(yesterday)
 	if today != yesterday {
 		getDay["Today"] = today
 		internal.WriteDataToJsonUtilites(getDay)
