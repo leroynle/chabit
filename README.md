@@ -45,7 +45,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">About The Application</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -96,7 +96,10 @@ Track as many tasks as you want to complate each day or week. Your goal is to bu
   Download and install Go with [this link](https://golang.org/doc/install)
 
 ### Installation
-Add Later
+
+```
+ go get github.com/leroynle/chabit 
+```
 
 <!-- USAGE EXAMPLES -->
 ## Usage

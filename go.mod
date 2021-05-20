@@ -1,4 +1,4 @@
-module chabit
+module github.com/leroynle/chabit
 
 go 1.16
 
