@@ -81,8 +81,8 @@ Track as many tasks as you want to complate each day or week. Your goal is to bu
   - Sync online 24/7.
   - You can write notes for your habits or tasks.
 
-> This project is still in development
-> 
+> **_NOTE:_** This project is still in development and is not publishing yet!
+
 ### Built With
 * [Go](https://getbootstrap.com)
 * [Cobra](https://jquery.com)
@@ -98,7 +98,8 @@ Track as many tasks as you want to complate each day or week. Your goal is to bu
 ### Installation
 
 ```
- go get github.com/leroynle/chabit 
+ git clone https://github.com/leroynle/chabit.git
+ go install
 ```
 
 <!-- USAGE EXAMPLES -->
